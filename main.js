@@ -84,8 +84,8 @@ const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
         const { left, top, width, height } = hero.getBoundingClientRect();
         const xPct = ((e.clientX - left) / width  - 0.5) * 2;
         const yPct = ((e.clientY - top)  / height - 0.5) * 2;
-        const moveX = xPct * 12;
-        const moveY = yPct * 6;
+        const moveX = xPct * 30;
+        const moveY = yPct * 18;
         layer.style.transform = `translate(${moveX}px, ${moveY}px)`;
     });
 
