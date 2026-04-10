@@ -570,6 +570,7 @@ section {
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: crosshair;
 }
 
 .araucaria-morph-wrap img {
@@ -1369,4 +1370,101 @@ footer {
         bottom: 1.8rem;
     }
 }
+
+/* ─────────────────────────────────────────────
+   BRISA — COLD DAWN MODE
+   Triggered on logo hover/touch. The storm
+   calms and a cold Andean dawn seeps through.
+───────────────────────────────────────────── */
+
+/* Dawn background overlay — sits above base bg,
+   below DNA helix (z-index 1) and text (z-index 5) */
+.brisa::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+        radial-gradient(ellipse at 50% 90%, rgba(255, 195, 110, 0.07) 0%, transparent 52%),
+        radial-gradient(circle at 50% 48%, #1C3D62 0%, #0E1F32 48%, rgba(10, 10, 10, 0) 78%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 2s var(--ease-glacial);
+}
+
+.brisa.dawn-active::before {
+    opacity: 1;
+}
+
+/* Wind canvas — smooth fade out */
+#glacial-wind-canvas.wind-calmed {
+    opacity: 0 !important;
+    transition: opacity 2s var(--ease-glacial) !important;
+}
+
+/* Logo image — shift to warm dawn glow */
+.araucaria-morph-wrap img {
+    transition: filter 1.8s var(--ease-glacial);
+}
+
+.brisa.dawn-active .araucaria-morph-wrap img {
+    filter:
+        drop-shadow(0 0 90px rgba(255, 200, 130, 0.6))
+        drop-shadow(0 0 30px rgba(160, 215, 255, 0.35))
+        brightness(1.08);
+}
+
+/* Morph glow — warm ámbar replaces cold glacier */
+.morph-glow {
+    transition: background 1.8s var(--ease-glacial), filter 1.8s var(--ease-glacial);
+}
+
+.brisa.dawn-active .morph-glow {
+    background: radial-gradient(circle, rgba(255, 195, 110, 0.22) 0%, rgba(90, 155, 215, 0.12) 50%, transparent 75%);
+    filter: blur(70px);
+}
+
+/* Section label — ámbar dawn accent */
+.brisa .section-label {
+    transition: color 1.8s ease;
+}
+
+.brisa .section-label::before {
+    transition: background 1.8s ease;
+}
+
+.brisa.dawn-active .section-label {
+    color: rgba(255, 210, 155, 0.85);
+}
+
+.brisa.dawn-active .section-label::before {
+    background: rgba(255, 210, 155, 0.85);
+}
+
+/* Glacier highlight — warm shift */
+.brisa .glacier-highlight {
+    transition: color 1.8s ease, text-shadow 1.8s ease;
+}
+
+.brisa.dawn-active .glacier-highlight {
+    color: rgba(255, 210, 150, 0.95);
+    text-shadow: 0 0 28px rgba(255, 190, 100, 0.5);
+}
+
+/* Suppress shiver: storm has calmed */
+.brisa.dawn-active.shiver-active {
+    animation: none !important;
+    transform: none !important;
+}
+
+/* DNA helix dims on dawn */
+.brisa.dawn-active .dna-helix-bg {
+    opacity: 0.05;
+    transition: opacity 2s var(--ease-glacial);
+}
+
+.brisa .dna-helix-bg {
+    transition: opacity 2s var(--ease-glacial);
+}
+
 

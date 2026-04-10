@@ -465,3 +465,50 @@ console.log(
     });
 })();
 
+/* ─────────────────────────────────────────────
+   14. BRISA COLD DAWN EFFECT
+   Hover/touch the logo → storm calms, cold
+   Andean dawn seeps through. Leave → storm returns.
+───────────────────────────────────────────── */
+(function initBrisaDawnEffect() {
+    const brisa    = qs('#brisa');
+    const logoWrap = qs('.araucaria-morph-wrap');
+    const canvas   = qs('#glacial-wind-canvas');
+    if (!brisa || !logoWrap || !canvas) return;
+
+    let touchTimer = null;
+
+    const enableDawn = () => {
+        brisa.classList.add('dawn-active');
+        // Suppress shiver while calm
+        brisa.classList.remove('shiver-active');
+        // Fade out the storm
+        canvas.classList.add('wind-calmed');
+    };
+
+    const disableDawn = () => {
+        brisa.classList.remove('dawn-active');
+        canvas.classList.remove('wind-calmed');
+        // Restore shiver — the IntersectionObserver won't re-fire
+        // since the section is already in view, so we reinstate it manually
+        brisa.classList.add('shiver-active');
+    };
+
+    // Desktop
+    logoWrap.addEventListener('mouseenter', enableDawn);
+    logoWrap.addEventListener('mouseleave', disableDawn);
+
+    // Mobile / touch
+    logoWrap.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        clearTimeout(touchTimer);
+        enableDawn();
+    }, { passive: false });
+
+    logoWrap.addEventListener('touchend', () => {
+        // Keep dawn mode briefly so the transition is visible
+        touchTimer = setTimeout(disableDawn, 1400);
+    });
+})();
+
+
