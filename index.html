@@ -5,6 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Külfün | Tu próxima cima empieza aquí</title>
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon_io/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="assets/favicon_io/site.webmanifest">
+    <link rel="shortcut icon" href="assets/favicon_io/favicon.ico">
+
     <meta name="description"
         content="Külfün — Nutrición autónoma a temperatura glacial. Tecnología TCN 720-6G con raíces en el pueblo Mapuche y la fuerza de los Andes.">
     <meta property="og:title" content="Külfün | Nutrición Autónoma Premium">
@@ -85,27 +94,17 @@
             <div class="brisa-text">
                 <p class="section-label reveal">Origen</p>
                 <h2 class="section-title reveal reveal-delay-1">BRISA<br>ANCESTRAL</h2>
-                <p class="reveal reveal-delay-2">
-                    En la lengua de la tierra, <strong>Külfün</strong> no es una palabra ordinaria.
-                    En Mapudungun, nombra la fuerza vital que habita en quienes son ágiles, diligentes,
-                    llenos de energía — aquellos que no se detienen.
+                <p class="reveal reveal-delay-2" style="max-width: 600px; margin: 0 auto;">
+                    En Mapudungun, <strong class="glacier-highlight">Külfün</strong> se refiere al buen estado de salud, 
+                    la fuerza física y la vitalidad. Una base profunda para un rendimiento autónomo.
                 </p>
-                <p class="reveal reveal-delay-3">
-                    Nuestro símbolo es la <strong>Araucaria Araucana (Pehuén)</strong>, árbol milenario
-                    que ha sobrevivido todo. Sus raíces sostienen montañas. Su energía alimentó al pueblo
-                    Mapuche por siglos. Hoy, esa fuerza llega autónoma, fría y precisa.
-                </p>
-                <blockquote class="brisa-quote reveal reveal-delay-4">
-                    <span>// MAPUDUNGUN</span><br>
-                    "külfün" → ágil, diligente, lleno de fuerza vital.<br>
-                    "fün" → raíz, base, fundamento profundo.
-                </blockquote>
             </div>
 
-            <div class="brisa-visual reveal reveal-delay-2">
-                <div class="araucaria-wrap">
-                    <img src="assets/araucaria_symbol_png_1775754453479.png" alt="Símbolo Araucaria Külfün"
+            <div class="brisa-visual reveal reveal-delay-3">
+                <div class="araucaria-morph-wrap">
+                    <img src="assets/favicon.png" alt="Símbolo Logo Külfün"
                         loading="lazy">
+                    <div class="morph-glow"></div>
                 </div>
             </div>
         </section>
@@ -146,6 +145,11 @@
         <!-- TECH-SPEC GRID                          -->
         <!-- ═══════════════════════════════════════ -->
         <section id="tech" class="tech-spec">
+            <!-- DNA Helix Background (Horizontal Worm) -->
+            <div class="dna-helix-bg">
+                <div id="dna-helix"></div>
+            </div>
+
             <div class="tech-header-row">
                 <div>
                     <p class="section-label reveal">Especificaciones</p>
@@ -270,6 +274,10 @@
         </div>
     </footer>
 
+    <!-- Atmospheric Effects Layer -->
+    <canvas id="glacial-wind-canvas"></canvas>
+
+    <!-- Interactive Engine -->
     <script src="main.js"></script>
 </body>
 

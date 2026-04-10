@@ -109,12 +109,13 @@ const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('active');
-                observer.unobserve(entry.target);
+            } else {
+                entry.target.classList.remove('active');
             }
         });
     }, {
-        threshold: 0.12,
-        rootMargin: '0px 0px -60px 0px'
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
     });
 
     elements.forEach(el => observer.observe(el));
@@ -254,24 +255,6 @@ const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
 })();
 
 /* ─────────────────────────────────────────────
-   9. "48" COMMITMENT — Machine Screen Flicker
-   Simulates a vending machine LED display on hover
-───────────────────────────────────────────── */
-(function initFlicker48() {
-    const num = qs('.commitment-number');
-    if (!num) return;
-
-    num.addEventListener('mouseenter', () => {
-        num.classList.add('is-flickering');
-    });
-
-    num.addEventListener('mouseleave', () => {
-        // Short delay before stopping so last flicker finishes cleanly
-        setTimeout(() => num.classList.remove('is-flickering'), 200);
-    });
-})();
-
-/* ─────────────────────────────────────────────
    10. DEV SIGNATURE
 ───────────────────────────────────────────── */
 console.log(
@@ -282,3 +265,159 @@ console.log(
     '%c // Glacial Monolith — Nutrición Autónoma ',
     'color: #707070; font-family: monospace; font-size: 11px;'
 );
+
+/* ─────────────────────────────────────────────
+   11. BRISA DNA HELIX — Dynamic Generation
+   Creates 30 base pairs with staggered timing
+───────────────────────────────────────────── */
+/* ─────────────────────────────────────────────
+   11. TECH DNA HELIX — Relocated & Horizontal
+   Creates a horizontal "worm-like" genetic strand for Sistema Autónomo
+───────────────────────────────────────────── */
+(function initDNAHelix() {
+    const helix = document.getElementById('dna-helix');
+    if (!helix) return;
+
+    const count = 30;
+    const spacing = 100 / count; 
+    
+    for (let i = 0; i < count; i++) {
+        const pair = document.createElement('div');
+        pair.className = 'dna-pair';
+        pair.style.setProperty('--i', i);
+        // Position horizontally
+        pair.style.left = `${i * spacing}%`;
+        pair.style.top = '50%';
+        pair.style.transform = 'translateY(-50%)';
+        
+        const bar = document.createElement('div');
+        bar.className = 'dna-bar';
+        
+        pair.appendChild(bar);
+        helix.appendChild(pair);
+    }
+
+    // Scroll-linked rotation (Horizontal axis)
+    window.addEventListener('scroll', () => {
+        const section = document.getElementById('tech');
+        if (!section) return;
+
+        const rect     = section.getBoundingClientRect();
+        const isInView = rect.top < window.innerHeight && rect.bottom > 0;
+        
+        if (isInView) {
+            const scrollPct = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+            // Twists like a worm behind the specs
+            helix.style.transform = `rotateX(75deg) rotateY(${scrollPct * 120}deg) scale(1.2)`;
+        }
+    }, { passive: true });
+})();
+
+/* ─────────────────────────────────────────────
+   12. GLACIAL WIND & SHIVER — Brisa Section
+   Atmospheric overhaul for extreme cold immersion
+───────────────────────────────────────────── */
+(function initBrisaAtmosphere() {
+    const canvas = document.getElementById('glacial-wind-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const brisaSection = document.getElementById('brisa');
+    if (!brisaSection) return;
+
+    let particles = [];
+    let animationId = null;
+    let isSectionInView = false;
+    let width, height;
+
+    const resize = () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+        constructor(isInitial = false) { this.init(isInitial); }
+        init(isInitial = false) {
+            this.x = isInitial ? Math.random() * width : -150;
+            this.y = Math.random() * height;
+            this.speed = 30 + Math.random() * 45; // Faster wind
+            this.size = 0.5 + Math.random() * 2;
+            this.length = 40 + Math.random() * 120; // Longer streaks
+            this.opacity = 0.05 + Math.random() * 0.35;
+            this.type = Math.random() > 0.6 ? 'streak' : 'flake';
+            this.sinOffset = Math.random() * Math.PI * 2;
+            this.sinSpeed = 0.01 + Math.random() * 0.03;
+        }
+        update() {
+            this.x += this.speed;
+            this.y += Math.sin(Date.now() * this.sinSpeed + this.sinOffset) * 2;
+            if (this.x > width + 200) {
+                if (isSectionInView) { this.init(false); return true; }
+                return false;
+            }
+            return true;
+        }
+        draw() {
+            ctx.strokeStyle = `rgba(160, 216, 239, ${this.opacity})`;
+            ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+            if (this.type === 'streak') {
+                ctx.beginPath(); ctx.lineWidth = this.size;
+                ctx.moveTo(this.x, this.y); ctx.lineTo(this.x - this.length, this.y);
+                ctx.stroke();
+            } else {
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+    }
+
+    const animate = () => {
+        ctx.clearRect(0, 0, width, height);
+        particles = particles.filter(p => {
+            if (p.update()) { p.draw(); return true; }
+            return false;
+        });
+        if (isSectionInView || particles.length > 0) {
+            animationId = requestAnimationFrame(animate);
+        } else {
+            animationId = null;
+        }
+    };
+
+    // Trigger effect based on section visibility with STAGGERED logic
+    let windStartTimeout = null;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            isSectionInView = entry.isIntersecting;
+            
+            if (isSectionInView) {
+                // 1. Trigger text reveal and shiver immediately
+                brisaSection.classList.add('shiver-active');
+                
+                // 2. STAGGERED WIND: Wait for text reveal to progress before starting heavy canvas animation
+                clearTimeout(windStartTimeout);
+                windStartTimeout = setTimeout(() => {
+                    if (isSectionInView) {
+                        canvas.classList.add('wind-active');
+                        if (particles.length < 180) {
+                            const shortage = 180 - particles.length;
+                            for (let i = 0; i < shortage; i++) {
+                                particles.push(new Particle(true));
+                            }
+                        }
+                        if (!animationId) animate();
+                    }
+                }, 600); // 600ms delay to separate effects
+
+            } else {
+                clearTimeout(windStartTimeout);
+                canvas.classList.remove('wind-active');
+                brisaSection.classList.remove('shiver-active');
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -100px 0px' });
+
+    observer.observe(brisaSection);
+})();
