@@ -421,3 +421,47 @@ console.log(
 
     observer.observe(brisaSection);
 })();
+
+/* ─────────────────────────────────────────────
+   13. BACK TO TOP
+   Appears when user reaches page bottom (~120px).
+   Click triggers a launch animation then scrolls.
+───────────────────────────────────────────── */
+(function initBackToTop() {
+    const btn = qs('#back-to-top');
+    if (!btn) return;
+
+    const THRESHOLD = 120; // px from page bottom
+
+    const toggleVisibility = () => {
+        const distFromBottom =
+            document.documentElement.scrollHeight -
+            window.scrollY -
+            window.innerHeight;
+
+        if (distFromBottom <= THRESHOLD) {
+            btn.classList.add('visible');
+        } else {
+            btn.classList.remove('visible');
+        }
+    };
+
+    window.addEventListener('scroll', toggleVisibility, { passive: true });
+    toggleVisibility();
+
+    btn.addEventListener('click', () => {
+        // Cinematic launch animation
+        btn.classList.add('launching');
+
+        // Smooth scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Reset button state after animation
+        btn.addEventListener('animationend', () => {
+            btn.classList.remove('launching', 'visible');
+            // Re-check visibility after scroll settles
+            setTimeout(toggleVisibility, 900);
+        }, { once: true });
+    });
+})();
+
