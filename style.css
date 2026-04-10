@@ -982,9 +982,19 @@ section {
     transition: -webkit-text-stroke 0.2s ease;
 }
 
-.commitment-number.active,
-.commitment-number:hover {
-    animation: machineFlicker 1.8s ease-in-out infinite;
+/* Desktop (real hover): both :hover and .active trigger flicker */
+@media (hover: hover) and (pointer: fine) {
+    .commitment-number.active,
+    .commitment-number:hover {
+        animation: machineFlicker 1.8s ease-in-out infinite;
+    }
+}
+
+/* Touch/mobile: only .active drives the flicker — no ghost-hover restarts */
+@media (hover: none) {
+    .commitment-number.active {
+        animation: machineFlicker 1.8s ease-in-out infinite;
+    }
 }
 
 .commitment-tag {
@@ -1467,4 +1477,16 @@ footer {
     transition: opacity 2s var(--ease-glacial);
 }
 
-
+/* ─── FIX: commitment-number flicker on mobile ───
+   The global .reveal.active { animation-name: revealLite !important }
+   from the 768px breakpoint crushes machineFlicker.
+   This override restores it for touch/mobile devices. ─── */
+@media (hover: none), (max-width: 768px) {
+    .commitment-number.active {
+        animation-name: machineFlicker !important;
+        animation-duration: 1.8s !important;
+        animation-timing-function: ease-in-out !important;
+        animation-iteration-count: infinite !important;
+        animation-fill-mode: none !important;
+    }
+}

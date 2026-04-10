@@ -109,8 +109,7 @@ const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('active');
-            } else {
-                entry.target.classList.remove('active');
+                observer.unobserve(entry.target); // Fire once — never toggle again
             }
         });
     }, {
