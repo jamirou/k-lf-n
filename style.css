@@ -1189,7 +1189,12 @@ footer {
     }
 
     /* Optimized reveal for mobile performance */
-    .reveal.active {
+    /* Exclude .commitment-icon and .commitment-number:
+       - .commitment-icon has glowPulse (infinite) — overriding causes endless loop.
+       - .commitment-number has machineFlicker (infinite) — same issue; its reveal
+         appearance is handled by CSS transitions (.reveal → .reveal.active), so
+         no animation override is needed. */
+    .reveal.active:not(.commitment-icon):not(.commitment-number) {
         animation-name: revealLite !important;
     }
 
